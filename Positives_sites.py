@@ -16,25 +16,39 @@ from svgutils.compose import *
 
 #============================================================================================
 
-"""from argparse import ArgumentParser, FileType
-parser = ArgumentParser(description='''Tool to plot convergent sites from a result table, a tree and a MSA.
-ex:\n\n
-python script/plot_convergent_sites.py  -tsv example/tree4plot.tsv -msa example/tree4plot.fa -tree example/tree4plot_annotated.nw -out example/tree4plot.svg -meth Meth3,Meth1 -t Meth3:0.8,Meth1:70
-''')
-parser.add_argument('-csvM1', metavar="table.csv", type=FileType('r'),
-    help='the result table for M1', required=True)
-parser.add_argument('-csvM2', metavar="table.csv", type=FileType('r'),
-    help='the result table for M2', required=True)"""
+from argparse import ArgumentParser, FileType
+parser = ArgumentParser(description='''Tool to plot positive sites from two result table, a tree and a MSA.''')
 
+parser.add_argument('-mod1', metavar="table.log", type=FileType('r'),
+    help='the result table for M1', required=True)
+
+parser.add_argument('-mod2', metavar="table.log", type=FileType('r'),
+    help='the result table for M2', required=True)
+
+parser.add_argument('-msa', metavar="msa.fa", type=FileType('r'),
+    help='the msa file (fasta format)', required=True)
+
+parser.add_argument('-tree', metavar="tree.nhx", type=FileType('r'),
+    help='the tree file (NHX format with the "Condition" tag)', required=True)
+
+#parser.add_argument('-out', metavar="output.svg", type=str,
+#                    help='the output file (svg format)', required=True)
 
 
 # names of files to read from
-M1 = 'C:/Users/Loris/OneDrive/Documents/Stage/DGINN/Example/PSMD2_CCDS_results_M1.log'
-M2 = 'C:/Users/Loris/OneDrive/Documents/Stage/DGINN/Example/PSMD2_CCDS_results_M2.log'
-g_tree='C:/Users/Loris/OneDrive/Documents/Stage/DGINN/Example/PSMD2_CCDS_M0.nwk.annotated'
-ali_nf='C:/Users/Loris/OneDrive/Documents/Stage/DGINN/Example/PSMD2_sequences_longestORFs_mafft_mincov_prank.best.fas'
+#M1 = PSMD2_CCDS_results_M1.log'
+#M2 = PSMD2_CCDS_results_M2.log'
+#g_tree=PSMD2_CCDS_M0.nwk.annotated'
+#ali_nf=PSMD2_sequences_longestORFs_mafft_mincov_prank.best.fas'
 #parser
 
+args = parser.parse_args()
+
+M1 = args.mod1
+M2 = args.mod2
+ali_nf = args.msa
+g_tree = args.tree
+out_file = args.out
 
 
 # read the data
@@ -75,13 +89,13 @@ plt.title("Omega mean for M2 per sites")
 image_format ='svg'
 image_name = 'PSMD2_CCDS_results'
 
-f.savefig('PSMD2_CCDS_results_pos.png')
+f.savefig('PSMD2_CCDS_results_pos.svg')
 
 #=============================================================================================
 #Alignement de l'arbre et des séquences
 
 t = PhyloTree(g_tree, ali_nf)
-t.render('PSMD2_CCDS_results_tree_ali.png')
+t.render('PSMD2_CCDS_results_tree_ali.svg')
 
 
 #=============================================================================================
@@ -97,8 +111,6 @@ t.render('PSMD2_CCDS_results_tree_ali.png')
 #          SVG("C:/Users/Loris/OneDrive/Documents/Stage/DGINN/Example/PSMD2_CCDS_M0.svg").scale(0.5)
 #          ).tile(1, 2)
 #       )
-
-
 
 
 
