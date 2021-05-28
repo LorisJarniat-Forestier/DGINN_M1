@@ -4,7 +4,6 @@ Created on Tue May 17 10:26:49 2021
 
 @author: Loris
 
-Fusionner les fichiers .log
 """
 
 import pandas as pd
