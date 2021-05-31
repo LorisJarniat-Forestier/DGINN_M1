@@ -31,6 +31,10 @@ parser.add_argument('-msa', metavar="msa.fa", type=FileType('r'),
 parser.add_argument('-tree', metavar="tree.nhx", type=FileType('r'),
     help='the tree file (NHX format with the "Condition" tag)', required=True)
 
+parser.add_argument('-t', dest="threshold", type=str,
+    metavar="\"meth1:0.6\"", help="threshold to filter site by method in the table file",
+    default=None)
+
 #parser.add_argument('-out', metavar="output.svg", type=str,
 #                    help='the output file (svg format)', required=True)
 
@@ -49,7 +53,7 @@ M2 = args.mod2
 ali_nf = args.msa
 g_tree = args.tree
 out_file = args.out
-
+lim = args.t
 
 # read the data
 df_M1 = pd.read_csv(M1, sep='\t')
@@ -66,7 +70,7 @@ diff = meanM2-meanM1
 #Mean
 mean=[]
 for i,element in enumerate(diff):
-        if element<-0.6 :
+        if element<-lim :
             mean.append(df_M2.at[i,"mean"])
         else:
             mean.append(0)
